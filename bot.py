@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+import json
 import requests
 import os
 
@@ -10,57 +10,125 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # api_url = 'https://api.api-ninjas.com/v1/convertcurrency?want=EUR&have=NGN&amount=50000'
-# response = requests.get(api_url, headers={'X-Api-Key': '6z3Qq8IuUoESg4EDBkx5TQ==wRKIwlp2ERcUIH7t'})
+# response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
 # if response.status_code == requests.codes.ok:
 #     print(response.text)
 # else:
-#     print("Error:", response.status_code, response.text)
+#     print('Error:', response.status_code, response.text)
 
-updater = Updater(os.getenv('TELEGRAM_TOKEN'), use_context=True)
+# api_url = 'https://api.api-ninjas.com/v1/exchangerate?pair=USD_EUR'
+# response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
+# x = response.json()
+# if response.status_code == requests.codes.ok:
+#     print(x['exchange_rate'])
+# else:
+#     print('Error:', response.status_code, response.text)
+
+def main():
+    updater = Updater(os.getenv('TELEGRAM_TOKEN'), use_context=True)
+    updater.dispatcher.add_handler(CommandHandler('start', start))
+    updater.dispatcher.add_handler(CommandHandler('help', help))
+    # updater.dispatcher.add_handler(CommandHandler('exchangerate', exchange_rate))
+    updater.dispatcher.add_handler(CommandHandler('jokes', jokes))
+    # updater.dispatcher.add_handler(CommandHandler('gmail', gmail_url))
+    # updater.dispatcher.add_handler(CommandHandler('geeks', geeks_url))
+    updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown))
+    updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown)) 
+    updater.start_polling()
+    updater.idle()
+
 
 def start(update: Update, context: CallbackContext):
 	update.message.reply_text(
-		"Hi! I'm here to help you with all your currency conversion needs :) \nYou can find out how to use me by sending a /help command")
+		"""Hi! I'm here to help you with all your currency conversion needs😄
+        You can find out how to use me by sending a /help command""")
 
 
-# def help(update: Update, context: CallbackContext):
-# 	update.message.reply_text("""Available Commands :-
-# 	/youtube - To get the youtube URL
-# 	/linkedin - To get the LinkedIn profile URL
-# 	/gmail - To get gmail URL
-# 	/geeks - To get the GeeksforGeeks URL""")
+def help(update: Update, context: CallbackContext):
+	update.message.reply_text("""Available Commands :-
+	/exchangerate - Get the exchange rate between two currencies
+	/convertcurrency - To get the LinkedIn profile URL
+	/jokes - To help you crack a smile just in case you're feeling blue🤗""")
+
+
+# def exchange_rate(update: Update, context: CallbackContext):
+#     update.message.reply_text('What currency do you want to convert from?')
+#     convert_to = update.message.text
+#     update.message.reply_text('What currency do you want to convert to?')
+#     convert_from = update.message.text
+#     api_url = f'https://api.api-ninjas.com/v1/exchangerate?pair={convert_from}_{convert_to}'
+#     response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
+#     res = response.json()
+#     rate = res['exchange_rate']
+#     answer = f'Currently the exchange rate of {convert_to} to {convert_from} is {rate}'
+#     if response.status_code == requests.codes.ok:
+#         update.message.reply_text(answer)
+#     else:
+#         update.message.reply_text('Error:', response.status_code, response.text)
+
+
+def jokes(update: Update, context: CallbackContext):
+    limit = 1
+    api_url = 'https://api.api-ninjas.com/v1/jokes?limit={}'.format(limit)
+    response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
+    res = response.json()
+    joke = res[0]['joke']
+    if response.status_code == requests.codes.ok:
+        update.message.reply_text(joke)
+    else:
+        update.message.reply_text('Error:', response.status_code, response.text)
+
+
+def unknown(update: Update, context: CallbackContext):
+	update.message.reply_text(f"Sorry {update.message.text} is not a valid command so I don't know what to do")
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # def gmail_url(update: Update, context: CallbackContext):
 # 	update.message.reply_text(
-# 		"Your gmail link here (I am not\
-# 		giving mine one for security reasons)")
+# 		'Your gmail link here (I am not\
+# 		giving mine one for security reasons)')
 
 
 # def youtube_url(update: Update, context: CallbackContext):
-# 	update.message.reply_text("Youtube Link =>\
-# 	https://www.youtube.com/")
+# 	update.message.reply_text('Youtube Link =>\
+# 	https://www.youtube.com/')
 
 
 # def linkedIn_url(update: Update, context: CallbackContext):
 # 	update.message.reply_text(
-# 		"LinkedIn URL => \
-# 		https://www.linkedin.com/in/dwaipayan-bandyopadhyay-007a/")
+# 		'LinkedIn URL => \
+# 		https://www.linkedin.com/in/dwaipayan-bandyopadhyay-007a/')
 
 
 # def geeks_url(update: Update, context: CallbackContext):
 # 	update.message.reply_text(
-# 		"GeeksforGeeks URL => https://www.geeksforgeeks.org/")
+# 		'GeeksforGeeks URL => https://www.geeksforgeeks.org/')
 
 
-# def unknown(update: Update, context: CallbackContext):
-# 	update.message.reply_text(
-# 		"Sorry '%s' is not a valid command" % update.message.text)
+
 
 
 # def unknown_text(update: Update, context: CallbackContext):
 # 	update.message.reply_text(
-# 		"Sorry I can't recognize you , you said '%s'" % update.message.text)
+# 		'Sorry I can't recognize you , you said '%s'' % update.message.text)
 
 
 # updater.dispatcher.add_handler(CommandHandler('start', start))
