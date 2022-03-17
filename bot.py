@@ -1,7 +1,5 @@
-import json
 import requests
 import os
-import logging
 
 from telegram.ext import (
     Updater, 
@@ -13,28 +11,6 @@ from telegram.ext import (
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# api_url = 'https://api.api-ninjas.com/v1/convertcurrency?want=EUR&have=NGN&amount=50000'
-# response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
-# if response.status_code == requests.codes.ok:
-#     print(response.text)
-# else:
-#     print('Error:', response.status_code, response.text)
-
-# api_url = 'https://api.api-ninjas.com/v1/exchangerate?pair=USD_EUR'
-# response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
-# x = response.json()
-# if response.status_code == requests.codes.ok:
-#     print(x['exchange_rate'])
-# else:
-#     print('Error:', response.status_code, response.text)
-
-# logging.basicConfig(
-#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-# )
-
-# logger = logging.getLogger(__name__)
-
 
 def start(update, context):
 	update.message.reply_text(
