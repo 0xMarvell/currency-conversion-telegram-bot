@@ -11,7 +11,6 @@ from telegram.ext import (
 )
 
 from dotenv import load_dotenv
-from dbhelper import DBHelper
 
 load_dotenv()
 
@@ -49,49 +48,34 @@ def help(update, context):
 	/jokes - To help you crack a smile just in case you're feeling blue :)""")
 
 
-def currency_1(update, context):
-    update.message.reply_text('What currency do you want to convert from?')
-    user_input = update.message.text
-    db.add_currency_choice(get_currency_1(user_input))
-    
-
-def get_currency_1(user_input):
-    answer = str(user_input)  
-    #update.message.reply_text(answer)
-    return answer
-
-
-def currency_2(update, context):
-    update.message.reply_text('What currency do you want to convert to?')
-    user_input = update.message.text
-    db.add_currency_choice(get_currency_1(user_input))
-    
-
-def get_currency_2(user_input):
-    answer = str(user_input)  
-    #update.message.reply_text(answer)
-    return answer
-
-
 def exchange_rate(update, context):
-    update.message.reply_text("""To do this, I'm going to need some information from you through these commands:
-	/currency1 - What currency do you want to convert from?
-	/currency2 - What currency do you want to convert to?
-	/getrate - Time to get the exchange rate between your currencies!""")
+    update.message.reply_text("""To do this, I'm going to need some information from you.
+    What do you want to conver from and what currency do you want to convert to?
+    Please type in your choices in a 'currency1 to curreny2' format
+    E.G 'USD to GBP'""")
 
-# def get_rate()
-#     convert_to = get_currency_2(user_input = update.message.text)
-#     convert_from = get_currency_1(user_input = update.message.text)
 
-#     api_url = f'https://api.api-ninjas.com/v1/exchangerate?pair={convert_from}_{convert_to}'
-#     response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
-#     res = response.json()
-#     rate = res['exchange_rate']
-#     answer = f'Currently the exchange rate of {convert_to} to {convert_from} is {rate}'
-#     if response.status_code == requests.codes.ok:
-#         update.message.reply_text(answer)
-#     else:
-#         update.message.reply_text('Error:', response.status_code, response.text)
+def get_exchange_rate(update, context):
+    choices = str(update.message.text).split()
+
+    if len(choices) > 3 or len(choices) < 3:
+        update.message.reply_text(
+            "Seems you didnt type in your choices in the specified format.",
+            "use the command /exchangerate to retry."
+        )
+    else:
+        convert_to = choices[-1]
+        convert_from = choices[0]
+
+        api_url = f'https://api.api-ninjas.com/v1/exchangerate?pair={convert_from}_{convert_to}'
+        response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
+        res = response.json()
+        rate = res['exchange_rate']
+        answer = f'Currently the exchange rate of {convert_to} to {convert_from} is {rate}.\nIn other words, one {convert_from} is equal to {rate} {convert_to}'
+        if response.status_code == requests.codes.ok:
+            update.message.reply_text(answer)
+        else:
+            update.message.reply_text('Error:', response.status_code, response.text)
 
 
 def jokes(update, context):
@@ -110,20 +94,20 @@ def unknown(update, context):
 	update.message.reply_text(f"I'm sorry but {update.message.text} is not a valid command so I don't know what to do 😕")
 
 
+def done():
+    pass
+
+
 def main():
-    db.setup()
     updater = Updater(os.getenv('TELEGRAM_TOKEN'), use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('help', help))
-    # dp.add_handler(CommandHandler('exchangerate', exchange_rate))
+    dp.add_handler(CommandHandler('exchangerate', exchange_rate))
     dp.add_handler(CommandHandler('jokes', jokes))
-    # dp.add_handler(CommandHandler('bookinfo1', currency_1))
-    # dp.add_handler(CommandHandler('bookinfo2', currency_2))
 
-    # dp.add_handler(MessageHandler(Filters.text, get_currency_1))
-    # dp.add_handler(MessageHandler(Filters.text, get_currency_2))
-    dp.add_handler(MessageHandler(Filters.text, unknown))
+    # dp.add_handler(MessageHandler(Filters.text, unknown))
+    dp.add_handler(MessageHandler(Filters.text, get_exchange_rate))
     dp.add_handler(MessageHandler(Filters.command, unknown))
 
     updater.start_polling()
@@ -131,4 +115,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    db = DBHelper()
