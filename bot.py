@@ -54,6 +54,16 @@ def get_exchange_rate(update, context):
             update.message.reply_text('Error:', response.status_code, response.text)
 
 
+def convert_currency():
+    # TODO: complete /convert currency command to allow user convert an amount of money from one currency to another.
+    pass 
+
+
+def get_converted_currency():
+    # TODO: complete function to return converted currency as reply to user.
+    pass
+
+
 def jokes(update, context):
     limit = 1
     api_url = 'https://api.api-ninjas.com/v1/jokes?limit={}'.format(limit)
