@@ -95,6 +95,7 @@ def unknown(update, context):
 
 
 def done():
+    # TODO: Complete /done command to allow user end interaction with bot
     pass
 
 
