@@ -7,18 +7,30 @@ class DBHelper:
         self.conn = sqlite3.connect(dbname)
 
     def setup(self):
-        stmt = "CREATE TABLE IF NOT EXISTS choices (description text)"
+        stmt = "CREATE TABLE IF NOT EXISTS Choices (currency_1 text currency_2 text)"
         self.conn.execute(stmt)
         self.conn.commit()
 
-    def add_currency_choice(self, choice_text):
-        stmt = "INSERT INTO choices (description) VALUES (?)"
+    def add_currency_1(self, choice_text):
+        stmt = "INSERT INTO Choices (currency_1) VALUES (?)"
         args = (choice_text, )
         self.conn.execute(stmt, args)
         self.conn.commit()
 
-    def delete_currency_choice(self, choice_text):
-        stmt = "DELETE FROM choices WHERE description = (?)"
+    def add_currency_2(self, choice_text):
+        stmt = "INSERT INTO Choices (currency_2) VALUES (?)"
+        args = (choice_text, )
+        self.conn.execute(stmt, args)
+        self.conn.commit()
+
+    def delete_currency_1(self, choice_text):
+        stmt = "DELETE FROM choices WHERE currency_1 = (?)"
+        args = (choice_text, )
+        self.conn.execute(stmt, args)
+        self.conn.commit()
+
+    def delete_currency_2(self, choice_text):
+        stmt = "DELETE FROM choices WHERE currency_2 = (?)"
         args = (choice_text, )
         self.conn.execute(stmt, args)
         self.conn.commit()
