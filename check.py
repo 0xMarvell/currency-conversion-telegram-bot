@@ -17,7 +17,7 @@ rate = res['exchange_rate']
 answer = f'Currently the exchange rate of {convert_to} to {convert_from} is {rate}'
 if response.status_code == requests.codes.ok:
     print(answer)
-    # db.add_currency_choice(rate)
+    db.add_currency_choice(rate)
     print(db.get_choices())
     # db.delete_currency_choice(rate)
     # print(db.get_choices())
