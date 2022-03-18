@@ -63,7 +63,7 @@ def get_exchange_rate(update, context):
         convert_from = choices[0]
 
         api_url = f'https://api.api-ninjas.com/v1/exchangerate?pair={convert_from}_{convert_to}'
-        response = requests.get(api_url, headers={'X-Api-Key': '6z3Qq8IuUoESg4EDBkx5TQ==wRKIwlp2ERcUIH7t'})
+        response = requests.get(api_url, headers={'X-Api-Key': API_NINJA_TOKEN})
         res = response.json()
         rate = res['exchange_rate']
         answer = f'Currently the exchange rate of {convert_to} to {convert_from} is {rate}.\nIn other words, one {convert_from} is equal to {rate} {convert_to}'
@@ -101,7 +101,7 @@ def get_converted_currency(update, context):
         have = choice[1]
         amount = choice[0]
         api_url = f'https://api.api-ninjas.com/v1/convertcurrency?want={want}&have={have}&amount={amount}'
-        response = requests.get(api_url, headers={'X-Api-Key': '6z3Qq8IuUoESg4EDBkx5TQ==wRKIwlp2ERcUIH7t'})
+        response = requests.get(api_url, headers={'X-Api-Key': API_NINJA_TOKEN})
         res = response.json()
         new_amount = res['new_amount']
         old_amount = res['old_amount']
@@ -122,7 +122,7 @@ def jokes(update, context):
     """
     limit = 1
     api_url = 'https://api.api-ninjas.com/v1/jokes?limit={}'.format(limit)
-    response = requests.get(api_url, headers={'X-Api-Key': '6z3Qq8IuUoESg4EDBkx5TQ==wRKIwlp2ERcUIH7t'})
+    response = requests.get(api_url, headers={'X-Api-Key': API_NINJA_TOKEN})
     res = response.json()
     joke = res[0]['joke']
     # if the API request returns the right status code
