@@ -50,6 +50,20 @@ They're both vital credentials and should be added to this script as environment
    pip install -r requirements.txt
    ```
  - In `bot.py` file, uncomment line 170 and comment out lines 172 - 177 then save file.
+  ```python
+    # Start the Bot (locally)
+    # Uncomment the line of code below
+    # updater.start_polling() 
+    
+    # Start the bot (Hosting on Heroku)
+    # Comment out the lines of code below
+    updater.start_webhook(
+        listen="0.0.0.0",
+        port=int(PORT),
+        url_path=TELEGRAM_TOKEN,
+        webhook_url='https://mrcurrency.herokuapp.com/' + TELEGRAM_TOKEN
+        )
+  ```
  - Run python script. It will act as a local server for your Telegram bot.
    ```bash
    python bot.py
