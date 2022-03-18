@@ -15,7 +15,7 @@ load_dotenv()
 # ENVIRONMENT VARIABLES
 API_NINJA_TOKEN = os.getenv('API_NINJA_TOKEN')
 TELEGRAM_TOKEN = '5197632370:AAEDATGHmJZB5Lp29mMv7P4r0bOsD-RvOa0'
-PORT = int(os.environ.get('PORT', 5000))
+PORT = int(os.environ.get('PORT', 8443))
 
 def start(update, context):
     """
