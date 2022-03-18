@@ -19,7 +19,7 @@ You can test out the bot using the link provided in the repo description above.
 
 ### Using your app API key and Telegram token as environment variables
 After creating your API Ninja account and your Telegram bot, you'll need to:
- - Navigate to your account dahsboard and take note of your API key.
+ - Navigate to your API Ninja account dahsboard and take note of your API key.
  - Take note of the API token provided for you after creating your Telegram bot.
 
 They're both vital credentials and should be added to this script as environment variables. Learn how to set environment variables for python projects using this [guide](https://dev.to/jakewitcher/using-env-files-for-environment-variables-in-python-applications-55a1).
