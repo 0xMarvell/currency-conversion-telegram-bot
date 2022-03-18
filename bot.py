@@ -15,6 +15,7 @@ load_dotenv()
 # ENVIRONMENT VARIABLES
 API_NINJA_TOKEN = os.getenv('API_NINJA_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+PORT = int(os.environ.get('PORT', 5000))
 
 def start(update, context):
     """
@@ -165,8 +166,15 @@ def main():
     print('Activating bot server...')
     sleep(2.00)
     print('Your bot is up and running :)')
-    # Start the Bot
-    updater.start_polling()
+    # Start the Bot (locally)
+    # updater.start_polling()
+    # Start the bot (Hosting on Heroku)
+    updater.start_webhook(
+        listen="0.0.0.0",
+        port=int(PORT),
+        url_path=TELEGRAM_TOKEN
+        )
+    updater.bot.setWebhook('https://yourherokuappname.herokuapp.com/' + TELEGRAM_TOKEN)
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
