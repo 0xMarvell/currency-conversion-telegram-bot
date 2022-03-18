@@ -12,22 +12,34 @@ from dotenv import load_dotenv
 from time import sleep
 
 load_dotenv()
-
+# ENVIRONMENT VARIABLES
 API_NINJA_TOKEN = os.getenv('API_NINJA_TOKEN')
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 
 def start(update, context):
-	update.message.reply_text(
+    """
+    Descriptive message that shows up when the bot is activated
+    (when the /start command is triggered).
+    """
+    update.message.reply_text(
 		"Hi! I'm here to help you with all your currency conversion needs.\nYou can find out how to use me by sending a /help command")
 
 
 def help(update, context):
-	update.message.reply_text("""Available Commands:
+    """
+    Descriptive message that displays all available commands
+    for the use of the bot.
+    """
+    update.message.reply_text("""Available Commands:
 	/exchangerate - Get the exchange rate between two currencies
 	/convertcurrency - Convert one currency to another
 	/jokes - To help you crack a smile just in case you're feeling blue :)\n/done - To say goodbye """)
 
 
 def exchange_rate(update, context):
+    """
+    Prompts user for input that follows a specified format.
+    """
     update.message.reply_text("""To do this, I'm going to need some information from you.
     What currency do you want to convert from and what currency do you want to convert to?
     Please type in your choices in a 'currency1 to curreny2' format
@@ -35,6 +47,10 @@ def exchange_rate(update, context):
 
 
 def get_exchange_rate(update, context):
+    """
+    Uses input gotten from the exchange_rate function as variables to help 
+    calculate exchange rate between two currencies.
+    """
     choices = str(update.message.text).split()
 
     if len(choices) > 3 or len(choices) < 3:
@@ -50,13 +66,18 @@ def get_exchange_rate(update, context):
         res = response.json()
         rate = res['exchange_rate']
         answer = f'Currently the exchange rate of {convert_to} to {convert_from} is {rate}.\nIn other words, one {convert_from} is equal to {rate} {convert_to}'
+        # if the API request returns the right status code
         if response.status_code == requests.codes.ok:
             update.message.reply_text(answer)
         else:
+            # return the status code and the logged error message
             update.message.reply_text('Error:', response.status_code, response.text)
 
 
 def convert_currency(update, context):
+    """
+    Prompts user for input that follows a specified format.
+    """
     update.message.reply_text("""To do this, I'm going to need some information from you.
     What currency do you want to convert from and what currency do you want to convert to?
     Please type in your choices in a 'currency1 to curreny2' format
@@ -64,6 +85,10 @@ def convert_currency(update, context):
 
 
 def get_converted_currency(update, context):
+    """
+    Uses input gotten from the convert_currency function as variables to help 
+    convert a given amount from one currency to another.
+    """
     choice = str(update.message.text).split()
 
     if len(choice) > 4 or len(choice) < 4:
@@ -82,36 +107,49 @@ def get_converted_currency(update, context):
         old_currency = res['old_currency']
         new_currency = res['new_currency']
         answer = f'Currently, {old_amount} {old_currency} is equvalent to {new_amount} {new_currency} '
+        # if the API request returns the right status code
         if response.status_code == requests.codes.ok:
             update.message.reply_text(answer)
         else:
+            # return the status code and the logged error message
             update.message.reply_text('Error:', response.status_code, response.text)
 
 
 def jokes(update, context):
+    """
+    Replies user with a random joke fetched from and API.
+    """
     limit = 1
     api_url = 'https://api.api-ninjas.com/v1/jokes?limit={}'.format(limit)
     response = requests.get(api_url, headers={'X-Api-Key': os.getenv('API_NINJA_TOKEN')})
     res = response.json()
     joke = res[0]['joke']
+    # if the API request returns the right status code
     if response.status_code == requests.codes.ok:
         update.message.reply_text(joke)
     else:
+        # return the status code and the logged error message
         update.message.reply_text('Error:', response.status_code, response.text)
 
 
 def unknown(update, context):
-	update.message.reply_text(f"I'm sorry but {update.message.text} is not a valid command so I don't know what to do 😕")
+    """
+    Replies user with a simple error message when an invalid command is inputted.
+    """
+    update.message.reply_text(f"I'm sorry but {update.message.text} is not a valid command so I don't know what to do 😕")
 
 
 def done(update, context):
+    """
+    Replies user with a farewell message.
+    """
     update.message.reply_text(
         """Thanks for coming around, I hope to see you again sometime😄. And remeber, to spend some time with me again, you just have to type in /start😉"""
     )
 
 
 def main():
-    updater = Updater(os.getenv('TELEGRAM_TOKEN'), use_context=True)
+    updater = Updater(TELEGRAM_TOKEN, use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('help', help))
