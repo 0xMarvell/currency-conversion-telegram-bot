@@ -9,6 +9,7 @@ from telegram.ext import (
 )
 
 from dotenv import load_dotenv
+from time import sleep
 
 load_dotenv()
 
@@ -123,8 +124,16 @@ def main():
     dp.add_handler(MessageHandler(Filters.text, get_converted_currency))
     dp.add_handler(MessageHandler(Filters.command, unknown))
 
+    print('Activating bot server...')
+    sleep(2.00)
+    print('Your bot is up and running :)')
+    # Start the Bot
     updater.start_polling()
+    # Run the bot until you press Ctrl-C or the process receives SIGINT,
+    # SIGTERM or SIGABRT. This should be used most of the time, since
+    # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
+
 
 if __name__ == '__main__':
     main()
