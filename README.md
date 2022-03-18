@@ -15,7 +15,7 @@ You can test out the bot using the link provided in the repo description above.
  - Make sure to have [python 3.10](https://www.python.org/downloads/) installed on your local mahcine.
  - Create an [API Ninja account](https://api-ninjas.com/register). You'll need the API key from your account dashboard for this to work.
  - Open a [Telegram account](https://telegram.org/) (if you don't already have one).
- - Create your Telegram bot. You can do this using this [guide.](https://core.telegram.org/bots#6-botfather). You will also need to take note of the telegram link provided after creating your bot.
+ - Create your Telegram bot. You can do this using this [guide](https://core.telegram.org/bots#6-botfather). You will also need to take note of the telegram link provided after creating your bot.
 
 ### Using your app API key and Telegram token as environment variables
 After creating your API Ninja account and your Telegram bot, you'll need to:
