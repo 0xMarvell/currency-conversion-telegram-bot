@@ -24,6 +24,8 @@ After creating your API Ninja account and your Telegram bot, you'll need to:
 
 They're both vital credentials and should be added to this script as environment variables. Learn how to set environment variables for python projects using this [guide](https://dev.to/jakewitcher/using-env-files-for-environment-variables-in-python-applications-55a1).
 
+ - Note that your environment variables should be named `TELEGRAM_TOKEN` and `API_NINJA_TOKEN` respectively.
+
 ## Run project
  - Clone project.
     ```bash
@@ -47,6 +49,7 @@ They're both vital credentials and should be added to this script as environment
    ```bash
    pip install -r requirements.txt
    ```
+ - In `bot.py` file, uncomment line 170 and comment out lines 172 - 177 then save file.
  - Run python script. It will act as a local server for your Telegram bot.
    ```bash
    python bot.py
