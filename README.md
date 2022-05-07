@@ -42,8 +42,8 @@ They're both vital credentials and should be added to this script as environment
    ```
  - Activate virtual environment (Windows).
    ```powershell
-   env/bin/activate.ps1 (powershell)
-   env/bin/activate.bat (command prompt)
+   env/Scripts/activate.ps1 (powershell)
+   env/Scripts/activate.bat (command prompt)
    ```
  - Install all required packages.
    ```bash
